@@ -1,21 +1,25 @@
-﻿namespace TVShows.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TVShows.Domain;
+
+public class Contents
 {
-    public class Contents
-    {
-        public int ID { get; set; }
-        public string Title { get; set; }
+    [Key]
+    public int ContentID { get; set; }
+    public string Title { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public int Rate { get; set; }
+    public int Rate { get; set; }
 
-        public int PremiereDate { get; set; }
+    public int PremiereDate { get; set; }
 
-        public string Img { get; set; }
+    public string Img { get; set; }
 
-        public virtual Genres GenreID { get; set; }
+    public virtual Genres Genre { get; set; }
 
-        public UserShowLists UserShowLists { get; set; }
+    public int GenreID { get; set; }
 
-    }
+    public IEnumerable<UserShowLists> UserShowLists { get; set; }
+
 }

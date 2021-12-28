@@ -8,7 +8,7 @@ namespace TVShows.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=hello;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TVShows;Trusted_Connection=True;");
         }
 
         public DbSet<Contents> Contents { get; set; }

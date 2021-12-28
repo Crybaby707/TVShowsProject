@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace TVShows.Domain
+namespace TVShows.Domain;
+
+public class Genres
 {
-    public class Genres
-    {
-            public int GenreID { get; set; }
+    [Key]
+    public int GenreID { get; set; }
 
-            public string GenreName { get; set; }
+    public string GenreName { get; set; }
 
-    }
 }
+
