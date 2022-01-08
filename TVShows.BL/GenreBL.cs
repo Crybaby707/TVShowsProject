@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TVShows.DAL;
+﻿using TVShows.DAL;
 using TVShows.Domain;
 
 namespace TVShows.BL;
@@ -17,20 +12,25 @@ public class GenreBL : IGenreBL
         _genreRepository = genreRepository;
     }
 
-    public IList<Genres> CreateGenre(Genres genres)
+    public Genre CreateGenre(Genre genres)
     {
         return _genreRepository.CreateGenre(genres);
     }
 
-    public IList<Genres> GetAll()
+    public IList<Genre> GetAll()
     {
         return _genreRepository.GetAll();
     }
-
-
-    public IList<Genres> DeleteGenre(int GenreId)
+    
+    public Genre GetGenreById(int genreId)
     {
-        return _genreRepository.DeleteGenre(GenreId);
+        return _genreRepository.GetGenreById(genreId);
+    }
+
+
+    public bool DeleteGenre(int genreId)
+    {
+        return _genreRepository.DeleteGenre(genreId);
     }
 }
 

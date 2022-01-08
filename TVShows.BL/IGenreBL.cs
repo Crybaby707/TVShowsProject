@@ -4,9 +4,11 @@ namespace TVShows.BL;
 
 public interface IGenreBL
 {
-    IList<Genres> GetAll();
+    IList<Genre> GetAll();
 
-    IList<Genres> CreateGenre(Genres genres);
+    Genre CreateGenre(Genre genres);
 
-    IList<Genres> DeleteGenre(int GenreId);
+    bool DeleteGenre(int genreId);
+
+    Genre GetGenreById(int genreId);
 }

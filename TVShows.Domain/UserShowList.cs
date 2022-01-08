@@ -3,18 +3,18 @@ using TVShows.Domain.Enums;
 
 namespace TVShows.Domain;
 
-public class UserShowLists
+public class UserShowList
 {
     [Key]
     public int UserShowListID { get; set; }
 
-    public virtual Contents Content { get; set; }
+    public virtual Content Content { get; set; }
 
-    public int ContentsID { get; set; }
+    public int ContentID { get; set; }
 
     public int UserId { get; set; }
 
-    public virtual Users User { get; set; }
+    public virtual User User { get; set; }
 
     public ListsCategoryEnum ListsCategory { get; set; }
 

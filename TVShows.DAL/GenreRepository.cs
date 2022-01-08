@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using TVShows.Data;
+﻿using TVShows.Data;
 using TVShows.Domain;
 
 namespace TVShows.DAL;
@@ -15,28 +14,45 @@ public class GenreRepository : IGenreRepository
 
     }
 
-    public IList<Genres> CreateGenre(Genres genres)
+    public Genre CreateGenre(Genre genres)
     {
-        Genres genresCreate = genres;
+        Genre genresCreate = genres;
         _context.Genres.Add(genresCreate);
         _context.SaveChanges();
-        return _context.Genres.ToList();
+        return genresCreate;
     }
 
-    public IList<Genres> GetAll()
+    public IList<Genre> GetAll()
     {
 
         return _context.Genres.ToList();
 
     }
 
-    public IList<Genres> DeleteGenre(int GenreId)
+    public Genre GetGenreById(int genreId)
     {
-        Genres GenreToDelete = _context.Genres.FirstOrDefault(u => u.GenreID == GenreId);
-        _context.Genres.Remove(GenreToDelete);
-        _context.SaveChanges();
-        return _context.Genres.ToList();
+        var genre = _context.Genres.FirstOrDefault(f => f.GenreID == genreId);
+        return genre;
 
+    }
+
+    public bool DeleteGenre(int genreId)
+    {
+        try
+        {
+            Genre genreToDelete = _context.Genres.FirstOrDefault(u => u.GenreID == genreId);
+            if (genreToDelete == null)
+            {
+                return false;
+            }
+            _context.Genres.Remove(genreToDelete);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
 }

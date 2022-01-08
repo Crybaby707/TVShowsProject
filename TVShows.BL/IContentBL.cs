@@ -4,6 +4,11 @@ namespace TVShows.BL;
 
 public interface IContentBL
 {
-    IList<Contents> GetAll();
-    IList<Contents> CreateContent(Contents contents);
+    IList<Content> GetAll();
+
+    Content CreateContent(Content contents);
+
+    bool DeleteContent(int contentId);
+
+    Content GetContentById(int contentId);
 }

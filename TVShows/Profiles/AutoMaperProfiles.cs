@@ -2,13 +2,16 @@
 using TVShows.BL.Dtos;
 using TVShows.Domain;
 
-namespace TVShows.WEB.Profiles
+namespace TVShows.WEB.Profiles;
+
+public class AutoMaperProfiles : Profile
 {
-    public class AutoMaperProfiles : Profile
+    public AutoMaperProfiles()
     {
-        public AutoMaperProfiles()
-        {
-            CreateMap<Contents, CreateContentDto>().ReverseMap();
-        }
+        CreateMap<Content, CreateContentDto>().ReverseMap();
+        CreateMap<User, CreateUserDto>().ReverseMap();
+        CreateMap<UserHasRole, CreateUserHasRoleDto>().ReverseMap();
+        CreateMap<UserShowList, AddUserShowListDto>().ReverseMap();
     }
 }
+

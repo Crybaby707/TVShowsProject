@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TVShows.DAL;
+﻿using TVShows.DAL;
 using TVShows.Domain;
 
 namespace TVShows.BL;
@@ -17,16 +12,24 @@ public class ContentBL : IContentBL
         _contentRepository = contentRepository;
     }
 
-    public IList<Contents> CreateContent(Contents contents)
+    public Content CreateContent(Content contents)
     {
         return _contentRepository.CreateContent(contents);
     }
 
-    public IList<Contents> GetAll()
+    public bool DeleteContent(int contentId)
+    {
+        return _contentRepository.DeleteContent(contentId);
+    }
+
+    public IList<Content> GetAll()
     {
         return _contentRepository.GetAll();
     }
-
-
+    
+    public Content GetContentById(int contentId)
+    {
+        return _contentRepository.GetContentById(contentId);
+    }
 }
 

@@ -7,7 +7,7 @@ public class UserHasRole
     [Key]
     public int UserRoleID { get; set; }
 
-    public virtual Users User { get; set; }
+    public virtual User User { get; set; }
 
     public int UserID { get; set; }
 

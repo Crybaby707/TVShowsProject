@@ -2,7 +2,7 @@
 
 namespace TVShows.Domain;
 
-public class Genres
+public class Genre
 {
     [Key]
     public int GenreID { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TVShows.Data;
 
@@ -10,9 +11,10 @@ using TVShows.Data;
 namespace TVShows.Data.Migrations
 {
     [DbContext(typeof(TVShowDbContext))]
-    partial class TVShowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220104190730_FixedUsersTable")]
+    partial class FixedUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,7 @@ namespace TVShows.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("TVShows.Domain.Content", b =>
+            modelBuilder.Entity("TVShows.Domain.Contents", b =>
                 {
                     b.Property<int>("ContentID")
                         .ValueGeneratedOnAdd()
@@ -57,7 +59,7 @@ namespace TVShows.Data.Migrations
                     b.ToTable("Contents");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.Genre", b =>
+            modelBuilder.Entity("TVShows.Domain.Genres", b =>
                 {
                     b.Property<int>("GenreID")
                         .ValueGeneratedOnAdd()
@@ -91,7 +93,30 @@ namespace TVShows.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.User", b =>
+            modelBuilder.Entity("TVShows.Domain.UserHasRole", b =>
+                {
+                    b.Property<int>("UserRoleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleID"), 1L, 1);
+
+                    b.Property<int>("RoleID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserRoleID");
+
+                    b.HasIndex("RoleID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserHasRoles");
+                });
+
+            modelBuilder.Entity("TVShows.Domain.Users", b =>
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
@@ -116,30 +141,7 @@ namespace TVShows.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.UserHasRole", b =>
-                {
-                    b.Property<int>("UserRoleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleID"), 1L, 1);
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserRoleID");
-
-                    b.HasIndex("RoleID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("UserHasRoles");
-                });
-
-            modelBuilder.Entity("TVShows.Domain.UserShowList", b =>
+            modelBuilder.Entity("TVShows.Domain.UserShowLists", b =>
                 {
                     b.Property<int>("UserShowListID")
                         .ValueGeneratedOnAdd()
@@ -147,7 +149,7 @@ namespace TVShows.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserShowListID"), 1L, 1);
 
-                    b.Property<int>("ContentID")
+                    b.Property<int>("ContentsID")
                         .HasColumnType("int");
 
                     b.Property<int>("ListsCategory")
@@ -158,16 +160,16 @@ namespace TVShows.Data.Migrations
 
                     b.HasKey("UserShowListID");
 
-                    b.HasIndex("ContentID");
+                    b.HasIndex("ContentsID");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("UsersShowLists");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.Content", b =>
+            modelBuilder.Entity("TVShows.Domain.Contents", b =>
                 {
-                    b.HasOne("TVShows.Domain.Genre", "Genre")
+                    b.HasOne("TVShows.Domain.Genres", "Genre")
                         .WithMany()
                         .HasForeignKey("GenreID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -184,7 +186,7 @@ namespace TVShows.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TVShows.Domain.User", "User")
+                    b.HasOne("TVShows.Domain.Users", "User")
                         .WithMany("UserRole")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -195,15 +197,15 @@ namespace TVShows.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.UserShowList", b =>
+            modelBuilder.Entity("TVShows.Domain.UserShowLists", b =>
                 {
-                    b.HasOne("TVShows.Domain.Content", "Content")
+                    b.HasOne("TVShows.Domain.Contents", "Content")
                         .WithMany("UserShowLists")
-                        .HasForeignKey("ContentID")
+                        .HasForeignKey("ContentsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TVShows.Domain.User", "User")
+                    b.HasOne("TVShows.Domain.Users", "User")
                         .WithMany("UserShowLists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -214,12 +216,12 @@ namespace TVShows.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.Content", b =>
+            modelBuilder.Entity("TVShows.Domain.Contents", b =>
                 {
                     b.Navigation("UserShowLists");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.User", b =>
+            modelBuilder.Entity("TVShows.Domain.Users", b =>
                 {
                     b.Navigation("UserRole");
 

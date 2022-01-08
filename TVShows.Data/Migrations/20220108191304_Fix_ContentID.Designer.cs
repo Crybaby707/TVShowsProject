@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TVShows.Data;
 
@@ -10,9 +11,10 @@ using TVShows.Data;
 namespace TVShows.Data.Migrations
 {
     [DbContext(typeof(TVShowDbContext))]
-    partial class TVShowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220108191304_Fix_ContentID")]
+    partial class Fix_ContentID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,7 +115,7 @@ namespace TVShows.Data.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("TVShows.Domain.UserHasRole", b =>

@@ -2,7 +2,7 @@
 
 namespace TVShows.Domain;
 
-public class Users
+public class User
 {
     [Key]
     public int UserID { get; set; }
@@ -13,13 +13,10 @@ public class Users
 
     public string Password { get; set; }
 
-    public string UserRoles { get; set; }
+    public IEnumerable<UserHasRole> UserRole { get; set; }
 
-    public int UserRoleID { get; set; }
-
-    public int RoleID { get; set; }
-
-    public IEnumerable<UserShowLists>  UserShowLists { get; set; }
+    public IEnumerable<UserShowList>  UserShowLists { get; set; }
 
 }
 
+    
