@@ -82,9 +82,11 @@ namespace TVShows.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleID"), 1L, 1);
 
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
 
                     b.Property<string>("RoleName")
                         .IsRequired()

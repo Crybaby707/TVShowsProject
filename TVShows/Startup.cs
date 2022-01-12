@@ -5,6 +5,7 @@ using TVShows.Data;
 using TVShows.WEB.Profiles;
 using TVShows.WEB.Services;
 
+
 namespace TVShows.WEB;
 
 public class Startup
@@ -34,6 +35,7 @@ public class Startup
         services.AddScoped<IUserAuthBL, UserAuthBL>();
         services.AddScoped<IUserAuthRepository, UserAuthRepository>();
         services.AddScoped<IIdentityService, IdentityService>();
+
 
 
         var mapperConfig = new MapperConfiguration(mc =>
