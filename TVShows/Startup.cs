@@ -32,8 +32,8 @@ public class Startup
         services.AddScoped<IContentRepository, ContentRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserShowListRepository, UserShowListRepository>();
-        services.AddScoped<IUserAuthBL, UserAuthBL>();
         services.AddScoped<IUserAuthRepository, UserAuthRepository>();
+        services.AddScoped<IUserAuthBL, UserAuthBL>();
         services.AddScoped<IIdentityService, IdentityService>();
 
 
