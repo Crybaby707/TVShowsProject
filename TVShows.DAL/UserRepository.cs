@@ -10,7 +10,6 @@ public class UserRepository : IUserRepository
     public UserRepository(TVShowDbContext context)
     {
         _context = context;
-
     }
 
     public User CreateUser(User users)
@@ -32,7 +31,6 @@ public class UserRepository : IUserRepository
     {
         var user = _context.Users.FirstOrDefault(f => f.UserID == userId);
         return user;
-
     }
 
     public bool DeleteUser(int userId)

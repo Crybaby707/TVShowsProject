@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TVShows.BL;
 using TVShows.BL.Dtos;
@@ -23,6 +24,7 @@ public class UserController : ControllerBase
 
     // GET: api/<ContentController>
     [HttpGet]
+    [Authorize (Roles = "User")]
     public IEnumerable<User> Get()
     {
         return _userBL.GetAll();
