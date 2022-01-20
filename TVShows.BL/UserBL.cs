@@ -31,4 +31,9 @@ public class UserBL : IUserBL
     {
         return _userRepository.GetUserById(userId);
     }
+
+    public User UpdateUser(User users)
+    {
+        return _userRepository.UpdateUser(users);
+    }
 }

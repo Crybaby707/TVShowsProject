@@ -57,4 +57,22 @@ public class UserShowListRepository : IUserShowListRepository
         var userShowList = _context.UsersShowLists.FirstOrDefault(f => f.UserShowListID == userShowListId);
         return userShowList;
     }
+
+    public UserShowList UpdateUserShowList(UserShowList userShowList)
+    {
+        try
+        {
+            if (userShowList == null)
+            {
+                return null;
+            }
+            _context.UsersShowLists.Update(userShowList);
+            _context.SaveChanges();
+            return userShowList;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

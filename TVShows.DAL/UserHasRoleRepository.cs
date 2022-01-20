@@ -64,4 +64,22 @@ public class UserHasRoleRepository : IUserHasRoleRepository
             return false;
         }
     }
+
+    public UserHasRole UpdateUserRole(UserHasRole userHasRole)
+    {
+        try
+        {
+            if (userHasRole == null)
+            {
+                return null;
+            }
+            _context.UserHasRoles.Update(userHasRole);
+            _context.SaveChanges();
+            return userHasRole;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

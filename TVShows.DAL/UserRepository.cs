@@ -52,4 +52,21 @@ public class UserRepository : IUserRepository
         }
     }
 
+    public User UpdateUser(User users)
+    {
+        try
+        {
+            if (users == null)
+            {
+                return null;
+            }
+            _context.Users.Update(users);
+            _context.SaveChanges();
+            return users;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

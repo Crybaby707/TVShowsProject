@@ -31,5 +31,10 @@ public class ContentBL : IContentBL
     {
         return _contentRepository.GetContentById(contentId);
     }
+
+    public Content UpdateContent(Content contents)
+    {
+        return _contentRepository.UpdateContent(contents);
+    }
 }
 

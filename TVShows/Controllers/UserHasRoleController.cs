@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TVShows.BL;
 using TVShows.BL.Dtos;
@@ -10,6 +11,7 @@ namespace TVShows.WEB.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 
 public class UserHasRoleController : ControllerBase
 {
@@ -46,8 +48,15 @@ public class UserHasRoleController : ControllerBase
 
     // PUT api/<UserController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public CreateUserHasRoleDto Put(int id, [FromBody] CreateUserHasRoleDto createUserHasRoleDto)
     {
+
+        var userHasRole = _mapper.Map<UserHasRole>(createUserHasRoleDto);
+
+        userHasRole.UserRoleID = id;
+
+        return _mapper.Map<CreateUserHasRoleDto>(_userHasRoleBL.UpdateUserRole(userHasRole));
+
     }
 
     // DELETE api/<UserController>/5

@@ -55,4 +55,21 @@ public class GenreRepository : IGenreRepository
         }
     }
 
+    public Genre UpdateGenre(Genre genres)
+    {
+        try
+        {
+            if (genres == null)
+            {
+                return null;
+            }
+            _context.Genres.Update(genres);
+            _context.SaveChanges();
+            return genres;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

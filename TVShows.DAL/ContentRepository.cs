@@ -53,4 +53,21 @@ public class ContentRepository : IContentRepository
         }
     }
 
+    public Content UpdateContent(Content contents)
+    {
+        try
+        {
+            if (contents == null)
+            {
+                return null;
+            }
+            _context.Contents.Update(contents);
+            _context.SaveChanges();
+            return contents;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
 }

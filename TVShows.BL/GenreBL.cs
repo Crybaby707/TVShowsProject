@@ -32,5 +32,10 @@ public class GenreBL : IGenreBL
     {
         return _genreRepository.DeleteGenre(genreId);
     }
+
+    public Genre UpdateGenre(Genre genres)
+    {
+        return _genreRepository.UpdateGenre(genres);
+    }
 }
 

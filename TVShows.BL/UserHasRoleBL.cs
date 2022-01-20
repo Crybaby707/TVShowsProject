@@ -31,5 +31,10 @@ public class UserHasRoleBL : IUserHasRoleBL
     {
         return _userHasRoleRepository.GetUserRoleById(userRoleId);
     }
+
+    public UserHasRole UpdateUserRole(UserHasRole userHasRole)
+    {
+        return _userHasRoleRepository.UpdateUserRole(userHasRole);
+    }
 }
 

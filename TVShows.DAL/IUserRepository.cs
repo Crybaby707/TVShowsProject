@@ -8,6 +8,8 @@ public interface IUserRepository
 
     User CreateUser(User users);
 
+    User UpdateUser(User users);
+
     bool DeleteUser(int userId);
 
     User GetUserById(int userId);

@@ -3,6 +3,7 @@ using TVShows.BL;
 using TVShows.Domain;
 using TVShows.BL.Dtos;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -41,6 +42,7 @@ public class ContentController : ControllerBase
 
     // POST api/<ContentController>
     [HttpPost]
+    [Authorize(Roles = "User")]
     public CreateContentDto Post([FromBody] CreateContentDto createContentDto)
     {
         var content = _mapper.Map<Content>(createContentDto);
@@ -50,12 +52,20 @@ public class ContentController : ControllerBase
 
     // PUT api/<ContentController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public CreateContentDto Put(int id, [FromBody] CreateContentDto createContentDto)
     {
+
+        var content = _mapper.Map<Content>(createContentDto);
+
+        content.ContentID = id;
+
+        return _mapper.Map<CreateContentDto>(_contentBL.UpdateContent(content));
+
     }
 
     // DELETE api/<ContentController>/5
     [HttpDelete("{ContentId}")]
+    [Authorize(Roles = "Admin")]
     public bool Delete(int contentId)
     {
         return _contentBL.DeleteContent(contentId);

@@ -8,6 +8,8 @@ public interface IUserShowListRepository
 
     UserShowList AddUserShowList(UserShowList userShowList);
 
+    UserShowList UpdateUserShowList(UserShowList userShowList);
+
     bool DeleteUserShowList(int userShowListId);
 
     UserShowList GetUserShowListById(int userShowListId);

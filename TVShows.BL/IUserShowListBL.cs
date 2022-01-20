@@ -8,6 +8,8 @@ public interface IUserShowListBL
 
     UserShowList AddUserShowList(UserShowList userShowList);
 
+    UserShowList UpdateUserShowList(UserShowList userShowList);
+
     bool DeleteUserShowList(int userShowList);
 
     UserShowList GetUserShowListById(int userShowList);

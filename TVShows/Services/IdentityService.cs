@@ -41,8 +41,7 @@ namespace TVShows.WEB.Services
             var objUser = JsonConvert.SerializeObject(mapper.Map<AuthUserDto>(user));
             var claims = new List<Claim>() {
                             new Claim(ClaimTypes.Sid, user.UserID.ToString()),
-                            new Claim(ClaimTypes.Name, user.Email),
-                            new Claim("user", objUser)
+                            new Claim(ClaimTypes.Name, user.Email)
             };
             var roles = user.UserRole.Select(ur => ur.Role);
             foreach (var role in roles)

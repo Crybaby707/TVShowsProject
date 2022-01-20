@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TVShows.BL;
 using TVShows.BL.Dtos;
@@ -10,6 +11,7 @@ namespace TVShows.WEB.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UserShowListController : ControllerBase
 {
     private readonly IUserShowListBL _userShowListBL;
@@ -45,8 +47,15 @@ public class UserShowListController : ControllerBase
 
     // PUT api/<ValuesController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public AddUserShowListDto Put(int id, [FromBody] AddUserShowListDto addUserShowListDto)
     {
+
+        var userShowList = _mapper.Map<UserShowList>(addUserShowListDto);
+
+        userShowList.UserShowListID = id;
+
+        return _mapper.Map<AddUserShowListDto>(_userShowListBL.UpdateUserShowList(userShowList));
+
     }
 
     // DELETE api/<ValuesController>/5

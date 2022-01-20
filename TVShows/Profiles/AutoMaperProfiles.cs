@@ -13,6 +13,7 @@ public class AutoMaperProfiles : Profile
         CreateMap<UserHasRole, CreateUserHasRoleDto>().ReverseMap();
         CreateMap<UserShowList, AddUserShowListDto>().ReverseMap();
         CreateMap<User, AuthUserDto>().ReverseMap();
+        CreateMap<Genre, CreateGenreDto>().ReverseMap();
     }
 }
 

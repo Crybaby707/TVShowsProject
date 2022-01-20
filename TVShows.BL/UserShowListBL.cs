@@ -30,5 +30,10 @@ public class UserShowListBL : IUserShowListBL
     {
         return _userShowListRepository.GetUserShowListById(userShowList);
     }
+
+    public UserShowList UpdateUserShowList(UserShowList userShowList)
+    {
+        return _userShowListRepository.UpdateUserShowList(userShowList);
+    }
 }
 

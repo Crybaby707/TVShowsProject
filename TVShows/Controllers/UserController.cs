@@ -12,6 +12,7 @@ namespace TVShows.WEB.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class UserController : ControllerBase
 {
     private readonly IUserBL _userBL;
@@ -24,7 +25,6 @@ public class UserController : ControllerBase
 
     // GET: api/<ContentController>
     [HttpGet]
-    [Authorize (Roles = "User")]
     public IEnumerable<User> Get()
     {
         return _userBL.GetAll();
@@ -48,8 +48,15 @@ public class UserController : ControllerBase
 
     // PUT api/<UserController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public CreateUserDto Put(int id, [FromBody] CreateUserDto createUserDto)
     {
+
+        var users = _mapper.Map<User>(createUserDto);
+
+        users.UserID = id;
+
+        return _mapper.Map<CreateUserDto>(_userBL.UpdateUser(users));
+
     }
 
     // DELETE api/<UserController>/5

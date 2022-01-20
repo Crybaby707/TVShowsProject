@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TVShows.BL;
+using TVShows.BL.Dtos;
 using TVShows.Domain;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,10 +15,12 @@ public class GenreController : ControllerBase
 {
 
     private readonly IGenreBL _genreBL;
+    private readonly IMapper _mapper;
 
-    public GenreController(IGenreBL genreBL)
+    public GenreController(IGenreBL genreBL, IMapper mapper)
     {
         _genreBL = genreBL;
+        _mapper = mapper;
     }
 
 
@@ -37,6 +42,7 @@ public class GenreController : ControllerBase
 
     // POST api/<GenreController>
     [HttpPost]
+    [Authorize(Roles = "User")]
     public Genre Post([FromBody] Genre genres)
     {
         return _genreBL.CreateGenre(genres);
@@ -44,13 +50,20 @@ public class GenreController : ControllerBase
 
     // PUT api/<GenreController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public CreateGenreDto Put(int id, [FromBody] CreateGenreDto createGenreDto)
     {
+
+        var genres = _mapper.Map<Genre>(createGenreDto);
+
+        genres.GenreID = id;
+
+        return _mapper.Map<CreateGenreDto>(_genreBL.UpdateGenre(genres));
 
     }
 
     // DELETE api/<GenreController>/5
     [HttpDelete("{genreId}")]
+    [Authorize(Roles = "Admin")]
     public bool Delete(int genreId)
     {
         return _genreBL.DeleteGenre(genreId);
