@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TVShows.Data;
 
@@ -10,9 +11,10 @@ using TVShows.Data;
 namespace TVShows.Data.Migrations
 {
     [DbContext(typeof(TVShowDbContext))]
-    partial class TVShowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220121090919_AddTableContentGenre")]
+    partial class AddTableContentGenre
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +35,9 @@ namespace TVShows.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GenreID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Img")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -48,6 +53,8 @@ namespace TVShows.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ContentID");
+
+                    b.HasIndex("GenreID");
 
                     b.ToTable("Contents");
                 });
@@ -187,16 +194,27 @@ namespace TVShows.Data.Migrations
                     b.ToTable("UsersShowLists");
                 });
 
+            modelBuilder.Entity("TVShows.Domain.Content", b =>
+                {
+                    b.HasOne("TVShows.Domain.Genre", "Genre")
+                        .WithMany()
+                        .HasForeignKey("GenreID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genre");
+                });
+
             modelBuilder.Entity("TVShows.Domain.ContentGenre", b =>
                 {
                     b.HasOne("TVShows.Domain.Content", "Content")
-                        .WithMany("ContentGenres")
+                        .WithMany()
                         .HasForeignKey("ContentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TVShows.Domain.Genre", "Genre")
-                        .WithMany("ContentGenres")
+                        .WithMany()
                         .HasForeignKey("GenreID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -246,14 +264,7 @@ namespace TVShows.Data.Migrations
 
             modelBuilder.Entity("TVShows.Domain.Content", b =>
                 {
-                    b.Navigation("ContentGenres");
-
                     b.Navigation("UserShowLists");
-                });
-
-            modelBuilder.Entity("TVShows.Domain.Genre", b =>
-                {
-                    b.Navigation("ContentGenres");
                 });
 
             modelBuilder.Entity("TVShows.Domain.User", b =>

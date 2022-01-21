@@ -16,9 +16,7 @@ public class Content
 
     public string Img { get; set; }
 
-    public virtual Genre Genre { get; set; }
-
-    public int GenreID { get; set; }
+    public IEnumerable<ContentGenre> ContentGenres { get; set; }
 
     public IEnumerable<UserShowList> UserShowLists { get; set; }
 

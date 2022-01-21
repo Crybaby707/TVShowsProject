@@ -9,5 +9,7 @@ public class Genre
 
     public string GenreName { get; set; }
 
+    public IEnumerable<ContentGenre> ContentGenres { get; set; }
+
 }
 
