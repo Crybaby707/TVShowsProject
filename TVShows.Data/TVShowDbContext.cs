@@ -6,17 +6,6 @@ namespace TVShows.Data;
 public class TVShowDbContext : DbContext
 {
 
-    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity("myNamespace.Models.ChangeOrder", b =>
-        {
-            b.HasOne("myNamespace.Models.User")
-                .WithMany()
-                .HasForeignKey("CreatedByID")
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-    }*/
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TVShows;Trusted_Connection=True;");
@@ -36,5 +25,19 @@ public class TVShowDbContext : DbContext
 
     public DbSet<UserShowList> UsersShowLists { get; set; }
 
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ContentGenre>()
+            .HasOne(bc => bc.Content)
+            .WithMany(b => b.ContentGenres)
+            .HasForeignKey(bc => bc.ContentID)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<ContentGenre>()
+            .HasOne(bc => bc.Genre)
+            .WithMany(c => c.ContentGenres)
+            .HasForeignKey(bc => bc.GenreID)
+            .OnDelete(DeleteBehavior.NoAction);
+    }
 }
 

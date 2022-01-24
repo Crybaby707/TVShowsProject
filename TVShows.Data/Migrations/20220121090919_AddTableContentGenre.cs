@@ -25,13 +25,13 @@ namespace TVShows.Data.Migrations
                         column: x => x.ContentID,
                         principalTable: "Contents",
                         principalColumn: "ContentID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_ContentGenres_Genres_GenreID",
                         column: x => x.GenreID,
                         principalTable: "Genres",
                         principalColumn: "GenreID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
