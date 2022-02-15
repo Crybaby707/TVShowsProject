@@ -11,6 +11,4 @@ public class CreateContentDto
     public int PremiereDate { get; set; }
 
     public string Img { get; set; }
-
-    public int GenreID { get; set; }
 }
