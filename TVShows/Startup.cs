@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Globalization;
 using System.Text;
 using TVShows.BL;
 using TVShows.DAL;
@@ -20,6 +23,7 @@ public class Startup
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
+
     }
 
     public IConfiguration Configuration { get; }
@@ -27,8 +31,20 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddLocalization(o =>
+        {
+            // We will put our translations in a folder called Resources
+            o.ResourcesPath = "Resources";
+        });
+        services.AddMvc();
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+
+
+
+        services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
 
         services.AddDbContext<TVShowDbContext>();
+
         services.AddScoped<IGenreBL, GenreBL>();
         services.AddScoped<IContentBL, ContentBL>();
         services.AddScoped<IUserBL, UserBL>();
@@ -41,6 +57,8 @@ public class Startup
         services.AddScoped<IUserShowListRepository, UserShowListRepository>();
         services.AddScoped<IUserAuthRepository, UserAuthRepository>();
         services.AddScoped<IUserAuthBL, UserAuthBL>();
+        services.AddScoped<IContentGenreBL, ContentGenreBL>();
+        services.AddScoped<IContentGenreRepository, ContentGenreRepository>();
         services.AddScoped<IIdentityService, IdentityService>();
 
 
@@ -93,16 +111,6 @@ public class Startup
         });
 
         var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
-        /*services.AddDbContext<WebTemplateDbContext>(options => options.UseSqlServer(configurationSection.Value));
-        services.AddScoped<IWebTemplateDbContext, WebTemplateDbContext>();
-        services.AddScoped(provider =>
-                new Func<IWebTemplateDbContext>(() => provider.GetService<IWebTemplateDbContext>())
-            );*/
-        //services.AddScoped<IIdentityService, IdentityService>();
-
-        //RegisterBL(services);
-        //RegisterRepositories(services);
-        //RegisterAutomapper(services);
 
 
     }
@@ -110,14 +118,57 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseStaticFiles();
+
+        IList<CultureInfo> supportedCultures = new List<CultureInfo>
+        {
+        new CultureInfo("en-US"),
+        new CultureInfo("uk-UA"),
+        new CultureInfo("de-DE")
+        };
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new RequestCulture("en-US"),
+            SupportedCultures = supportedCultures,
+            SupportedUICultures = supportedCultures
+        });
+
+        app.UseMvc(routes =>
+        {
+            routes.MapRoute(
+                name: "default",
+                template: "{controller=Home}/{action=Index}/{id?}");
+        });
+
+
+
+
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseHttpsRedirection();
+      /*  var supportedCultures = new[]
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("uk-UK")
+        };
 
-        app.UseRouting();
+
+        var requestLocalizationOptions = new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US"),
+            SupportedCultures = supportedCultures,
+            SupportedUICultures = supportedCultures
+
+        };*/
+
+
+        app.UseHttpsRedirection();
+        //app.UseRequestLocalization(requestLocalizationOptions); 
+
+        app.UseRouting(); 
+
 
         app.UseAuthentication();
         app.UseAuthorization();

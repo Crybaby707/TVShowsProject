@@ -4,6 +4,7 @@ using TVShows.BL;
 using TVShows.BL.Dtos;
 using TVShows.Domain;
 using AutoMapper;
+using Microsoft.Extensions.Localization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,19 +17,24 @@ public class GenreController : ControllerBase
 
     private readonly IGenreBL _genreBL;
     private readonly IMapper _mapper;
+    private readonly IStringLocalizer<GenreController> _stringLocalizer;
+    private readonly ILogger<GenreController> _logger;
 
-    public GenreController(IGenreBL genreBL, IMapper mapper)
+    public GenreController(IGenreBL genreBL, IMapper mapper, IStringLocalizer<GenreController> stringLocalizer, ILogger<GenreController> logger)
     {
         _genreBL = genreBL;
         _mapper = mapper;
+        _stringLocalizer = stringLocalizer;
+        _logger = logger;
     }
 
-
+    
 
     // GET: api/<GenreController>
     [HttpGet]
     public IEnumerable<Genre> Get()
     {
+        var s = _stringLocalizer["button"];
         return _genreBL.GetAll();
     }
 
@@ -46,6 +52,8 @@ public class GenreController : ControllerBase
     public Genre Post([FromBody] Genre genres)
     {
         return _genreBL.CreateGenre(genres);
+
+
     }
 
     // PUT api/<GenreController>/5

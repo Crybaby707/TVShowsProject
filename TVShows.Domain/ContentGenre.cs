@@ -11,7 +11,7 @@ namespace TVShows.Domain
     {
 
         [Key]
-        public int ContentGenreId { get; set; }
+        public int ContentGenreID { get; set; }
 
         public virtual Content Content { get; set; }
 

@@ -192,13 +192,13 @@ namespace TVShows.Data.Migrations
                     b.HasOne("TVShows.Domain.Content", "Content")
                         .WithMany("ContentGenres")
                         .HasForeignKey("ContentID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TVShows.Domain.Genre", "Genre")
                         .WithMany("ContentGenres")
                         .HasForeignKey("GenreID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Content");

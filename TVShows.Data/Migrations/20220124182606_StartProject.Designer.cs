@@ -11,8 +11,8 @@ using TVShows.Data;
 namespace TVShows.Data.Migrations
 {
     [DbContext(typeof(TVShowDbContext))]
-    [Migration("20220108191958_Fix_ContentID2")]
-    partial class Fix_ContentID2
+    [Migration("20220124182606_StartProject")]
+    partial class StartProject
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,9 +54,30 @@ namespace TVShows.Data.Migrations
 
                     b.HasKey("ContentID");
 
+                    b.ToTable("Contents");
+                });
+
+            modelBuilder.Entity("TVShows.Domain.ContentGenre", b =>
+                {
+                    b.Property<int>("ContentGenreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContentGenreId"), 1L, 1);
+
+                    b.Property<int>("ContentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContentGenreId");
+
+                    b.HasIndex("ContentID");
+
                     b.HasIndex("GenreID");
 
-                    b.ToTable("Contents");
+                    b.ToTable("ContentGenres");
                 });
 
             modelBuilder.Entity("TVShows.Domain.Genre", b =>
@@ -83,6 +104,10 @@ namespace TVShows.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleID"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -115,7 +140,7 @@ namespace TVShows.Data.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TVShows.Domain.UserHasRole", b =>
@@ -167,13 +192,21 @@ namespace TVShows.Data.Migrations
                     b.ToTable("UsersShowLists");
                 });
 
-            modelBuilder.Entity("TVShows.Domain.Content", b =>
+            modelBuilder.Entity("TVShows.Domain.ContentGenre", b =>
                 {
-                    b.HasOne("TVShows.Domain.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("TVShows.Domain.Content", "Content")
+                        .WithMany("ContentGenres")
+                        .HasForeignKey("ContentID")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("TVShows.Domain.Genre", "Genre")
+                        .WithMany("ContentGenres")
+                        .HasForeignKey("GenreID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Content");
 
                     b.Navigation("Genre");
                 });
@@ -218,7 +251,14 @@ namespace TVShows.Data.Migrations
 
             modelBuilder.Entity("TVShows.Domain.Content", b =>
                 {
+                    b.Navigation("ContentGenres");
+
                     b.Navigation("UserShowLists");
+                });
+
+            modelBuilder.Entity("TVShows.Domain.Genre", b =>
+                {
+                    b.Navigation("ContentGenres");
                 });
 
             modelBuilder.Entity("TVShows.Domain.User", b =>

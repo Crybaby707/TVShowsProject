@@ -9,6 +9,24 @@ namespace TVShows.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Contents",
+                columns: table => new
+                {
+                    ContentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rate = table.Column<int>(type: "int", nullable: false),
+                    PremiereDate = table.Column<int>(type: "int", nullable: false),
+                    Img = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GenreID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contents", x => x.ContentID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Genres",
                 columns: table => new
                 {
@@ -27,6 +45,7 @@ namespace TVShows.Data.Migrations
                 {
                     RoleID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -42,10 +61,7 @@ namespace TVShows.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserRoles = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserRoleID = table.Column<int>(type: "int", nullable: false),
-                    RoleID = table.Column<int>(type: "int", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,27 +69,27 @@ namespace TVShows.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contents",
+                name: "ContentGenres",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    ContentGenreId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rate = table.Column<int>(type: "int", nullable: false),
-                    PremiereDate = table.Column<int>(type: "int", nullable: false),
-                    Img = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GenreID1 = table.Column<int>(type: "int", nullable: false)
+                    ContentID = table.Column<int>(type: "int", nullable: false),
+                    GenreID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contents", x => x.ID);
+                    table.PrimaryKey("PK_ContentGenres", x => x.ContentGenreId);
                     table.ForeignKey(
-                        name: "FK_Contents_Genres_GenreID1",
-                        column: x => x.GenreID1,
+                        name: "FK_ContentGenres_Contents_ContentID",
+                        column: x => x.ContentID,
+                        principalTable: "Contents",
+                        principalColumn: "ContentID");
+                    table.ForeignKey(
+                        name: "FK_ContentGenres_Genres_GenreID",
+                        column: x => x.GenreID,
                         principalTable: "Genres",
-                        principalColumn: "GenreID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "GenreID");
                 });
 
             migrationBuilder.CreateTable(
@@ -108,7 +124,7 @@ namespace TVShows.Data.Migrations
                 {
                     UserShowListID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ContentsID = table.Column<int>(type: "int", nullable: false),
+                    ContentID = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ListsCategory = table.Column<int>(type: "int", nullable: false)
                 },
@@ -116,10 +132,10 @@ namespace TVShows.Data.Migrations
                 {
                     table.PrimaryKey("PK_UsersShowLists", x => x.UserShowListID);
                     table.ForeignKey(
-                        name: "FK_UsersShowLists_Contents_ContentsID",
-                        column: x => x.ContentsID,
+                        name: "FK_UsersShowLists_Contents_ContentID",
+                        column: x => x.ContentID,
                         principalTable: "Contents",
-                        principalColumn: "ID",
+                        principalColumn: "ContentID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UsersShowLists_Users_UserId",
@@ -130,9 +146,14 @@ namespace TVShows.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contents_GenreID1",
-                table: "Contents",
-                column: "GenreID1");
+                name: "IX_ContentGenres_ContentID",
+                table: "ContentGenres",
+                column: "ContentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContentGenres_GenreID",
+                table: "ContentGenres",
+                column: "GenreID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserHasRoles_RoleID",
@@ -145,9 +166,9 @@ namespace TVShows.Data.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsersShowLists_ContentsID",
+                name: "IX_UsersShowLists_ContentID",
                 table: "UsersShowLists",
-                column: "ContentsID");
+                column: "ContentID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersShowLists_UserId",
@@ -158,10 +179,16 @@ namespace TVShows.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ContentGenres");
+
+            migrationBuilder.DropTable(
                 name: "UserHasRoles");
 
             migrationBuilder.DropTable(
                 name: "UsersShowLists");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "Roles");
@@ -171,9 +198,6 @@ namespace TVShows.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Genres");
         }
     }
 }

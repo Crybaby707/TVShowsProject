@@ -14,6 +14,7 @@ public class AutoMaperProfiles : Profile
         CreateMap<UserShowList, AddUserShowListDto>().ReverseMap();
         CreateMap<User, AuthUserDto>().ReverseMap();
         CreateMap<Genre, CreateGenreDto>().ReverseMap();
+        CreateMap<ContentGenre, CreateContentGenreDto>().ReverseMap();
     }
 }
 
